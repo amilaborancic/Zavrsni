@@ -2,7 +2,6 @@ import React from "react";
 import Footer from "./Footer";
 import Title from "./Title";
 import axios from "axios";
-import { templateLiteral } from "@babel/types";
 
 class Register extends React.Component {
     constructor() {
