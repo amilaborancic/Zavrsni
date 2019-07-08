@@ -27,7 +27,25 @@ app.get("/", function (req, res) {
         }
     })
 })
-
+//info oko tabela
+app.get("/tabele",(req,res)=>{
+    con.query("SELECT TABLE_NAME, TABLE_SCHEMA FROM information_schema.tables",(err,result)=>{
+        if(err){
+            res.send({
+                success: false,
+                msg: err,
+                data: null
+            })
+        }
+        else{
+            res.send({
+                success: true,
+                msg: err,
+                data: result
+            })
+        }
+    })
+})
 app.get("/items", (req, res) => {
     con.query("SELECT * FROM items", function (err, result) {
         if (err) {
@@ -273,7 +291,7 @@ app.get("/customer/info/:idCustomer", (req, res) => {
 app.get("/search/:keyword", (req, res) => {
 
     let word = req.params.keyword;
-    con.query("SELECT * FROM items WHERE upper(name) LIKE upper('%" + word + "%')", (err, result) => {
+    con.query("SELECT * FROM items WHERE name LIKE '%" + word + "%';", (err, result) => {
         if (err) {
             res.send({
                 success: false,
