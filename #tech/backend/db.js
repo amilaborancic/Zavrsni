@@ -30,11 +30,6 @@ con.query(customers, function (err) {
     })
 })
 
-/*con.query("SELECT * FROM customers", function(res, err){
-    if(err) console.log(err);
-    else console.log(res);
-})*/
-
 //if u mess up ima ovo ispod
 /*con.query("SET FOREIGN_KEY_CHECKS = 0;", function (err) {
     if (err) console.log(err);
@@ -42,17 +37,15 @@ con.query(customers, function (err) {
         if (err) console.log(err);
         con.query("DROP TABLE IF EXISTS carts", function (err) {
             if (err) console.log(err);
-            con.query("DROP TABLE IF EXISTS items", function (err) {
+            con.query("DROP TABLE IF EXISTS cart_items", function (err) {
                 if (err) console.log(err);
-                con.query("DROP TABLE IF EXISTS cart_items", function (err) {
+                con.query(" SET FOREIGN_KEY_CHECKS = 1;", function (err) {
                     if (err) console.log(err);
-                    con.query(" SET FOREIGN_KEY_CHECKS = 1;", function (err) {
-                        if (err) console.log(err);
-                    })
                 })
             })
         })
+
     })
-})
-*/
+})*/
+
 module.exports = con;

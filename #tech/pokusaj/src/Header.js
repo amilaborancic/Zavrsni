@@ -24,7 +24,7 @@ class Header extends React.Component {
                     }}>
                     <div className="col d-flex justify-content-start align-items-center">
                        
-                        <FooterHeaderBtns value="#TECH" onClick={() => this.handleClick("/")} />
+                        <FooterHeaderBtns value="#TECH" onClick={() => this.handleClick("/profile")} />
                     </div>
                     <div className="col d-flex justify-content-end align-items-center">
                         

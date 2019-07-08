@@ -2,39 +2,118 @@ import React from "react";
 import Footer from "./Footer";
 import Title from "./Title";
 import axios from "axios";
+import { templateLiteral } from "@babel/types";
 
 class Register extends React.Component {
     constructor() {
         super();
         this.state = {
-            redirectaj: false
+            redirectaj: false,
+            invalidClass: "form-control form-control-lg is-invalid",
+            class: "form-control form-control-lg"
+        }
+    }
+    validateAll = (e) => {
+        var novi = e.target;
+        var tel = novi.phone.value;
+        var card = novi.creditCard.value;
+        var sif = novi.pass.value;
+        var con_sif = novi.confirm.value;
+        var ok = false;
+        if (novi.name.value == "" || novi.lastName.value == "" || novi.email.value == "" || card == "" || tel == ""
+            || novi.address.value == "" || sif == "" || con_sif == "") {
+            this.setState({
+                class: "form-control form-control-lg is-invalid"
+            })
+            ok = false;
+        }
+        else {
+            this.setState({
+                class: "form-control form-control-lg"
+            })
+            ok = true;
+        }
+        return ok;
+    }
+    validateTel = (e)=>{
+        var novi = e.target;
+        var tel = novi.phone.value;
+        if (isNaN(parseInt(tel))) {
+            //provjera telefona
+            novi.phone.className = this.state.invalidClass;
+           return false;
+        }
+        else {
+            novi.phone.className = "form-control form-control-lg";
+            return true;
+
+        }
+    }
+    validateCard = (e)=>{
+        var novi = e.target;
+        var card = novi.creditCard.value;
+        if (isNaN(parseInt(card))) {
+            //provjera kartice
+            novi.creditCard.className = this.state.invalidClass;
+            return false;
+        }
+        else {
+            novi.creditCard.className = "form-control form-control-lg";
+            return true;
+        }
+    }
+    validatePass = (e) => {
+        var novi = e.target;
+        var sif = novi.pass.value;
+        var con_sif = novi.confirm.value;
+
+        if (sif != con_sif) {
+            //provjera slaganja sifri
+            novi.confirm.className = this.state.invalidClass;
+            novi.pass.className = this.state.invalidClass;
+            return false;
+        }
+        else {
+            novi.confirm.className = "form-control form-control-lg";
+            novi.pass.className = "form-control form-control-lg";
+            return true;
         }
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        var novi = e.target;
-        axios
-            .post("http://localhost:8080/register", {
-                name: novi.name.value,
-                lastName: novi.lastName.value,
-                email: novi.email.value,
-                creditCard: novi.creditCard.value,
-                phone: novi.phone.value,
-                address: novi.address.value,
-                password: novi.pass.value
-            })
-            .then(res => {
-                if (res.data.success) {
-                    console.log("registrovan");
-                    this.setState({
-                        redirectaj: true
-                    })
-                }
 
+        if (this.validateAll(e) && this.validateCard(e) && this.validatePass(e) && this.validateTel(e)) {
+            //prosla validacija
+            var novi = e.target;
+            this.setState({
+                class: "form-control form-control-lg"
             })
-            .catch(err => {
-                console.log(err);
-            })
+            //hash sifre (verzija 2)
+            //sifra duga 8 chara (verzija 2)
+            axios
+                .post("http://localhost:8080/register", {
+                    name: novi.name.value,
+                    lastName: novi.lastName.value,
+                    email: novi.email.value,
+                    creditCard: novi.creditCard.value,
+                    phone: novi.phone.value,
+                    address: novi.address.value,
+                    password: novi.pass.value
+                })
+                .then(res => {
+                    if (res.data.success) {
+                        //prikazemo modal
+                        document.getElementsByName("skriveni")[0].click();
+                    }
+
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+        else {
+
+        }
     }
     render() {
         return (
@@ -77,21 +156,24 @@ class Register extends React.Component {
                                         color: "#666666"
                                     }} >Registration Form</h1>
                                     <br></br>
-                                    <input type="text" class="form-control form-control-lg" placeholder="NAME" name="name" />
+                                    <input type="text" class={this.state.class} placeholder="NAME" name="name" />
                                     <br></br>
-                                    <input type="text" class="form-control form-control-lg" placeholder="LAST NAME" name="lastName" />
+                                    <input type="text" class={this.state.class} placeholder="LAST NAME" name="lastName" />
                                     <br></br>
-                                    <input type="text" class="form-control form-control-lg" placeholder="ADDRESS" name="address" />
+                                    <input type="text" class={this.state.class} placeholder="ADDRESS" name="address" />
                                     <br></br>
-                                    <input type="text" class="form-control form-control-lg" placeholder="EMAIL" name="email" />
+                                    <input type="text" class={this.state.class} placeholder="EMAIL" name="email" />
                                     <br></br>
-                                    <input type="password" class="form-control form-control-lg" placeholder="PASSWORD" name="pass" />
+                                    <input type="password" class={this.state.class} placeholder="PASSWORD" name="pass" />
                                     <br></br>
-                                    <input type="password" class="form-control form-control-lg" placeholder="CONFIRM PASSWORD" />
+                                    <input type="password" class={this.state.class} placeholder="CONFIRM PASSWORD" name="confirm" id="match" />
+                                    <div htmlFor="#match" className="invalid-feedback">Passwords don't match.</div>
                                     <br></br>
-                                    <input type="text" class="form-control form-control-lg" placeholder="PHONE" name="phone" />
+                                    <input type="text" class={this.state.class} placeholder="PHONE" id="phone" name="phone" />
+                                    <div htmlFor="#phone" className="invalid-feedback">Phone must be a number.</div>
                                     <br></br>
-                                    <input type="text" class="form-control form-control-lg" placeholder="CREDIT CARD" name="creditCard" />
+                                    <input type="text" class={this.state.class} id="credit" placeholder="CREDIT CARD" name="creditCard" />
+                                    <div htmlFor="#credit" className="invalid-feedback">Credit card must be a number.</div>
                                     <br></br>
                                     <button
                                         style={{
@@ -105,9 +187,10 @@ class Register extends React.Component {
 
                                         }}
                                         type="submit"
-                                        data-toggle="modal"
-                                        data-target="#confirm"
+
+
                                     >R E G I S T E R</button>
+                                    <button hidden data-toggle="modal" data-target="#confirm" type="button" name="skriveni"></button>
                                 </form>
 
                             </div>

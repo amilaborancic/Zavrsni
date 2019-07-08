@@ -71,8 +71,7 @@ class Cart extends React.Component {
                     style={{
                         backgroundColor: "#efefef",
                         fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
-                        minHeight: "calc(100vh)",
-                        marginBottom:"60px",
+                        minHeight: "calc(100vh)"
                     }}>
                     <Title text="CART" />
                     <div style={{ textAlign: "left" }}>
@@ -86,11 +85,6 @@ class Cart extends React.Component {
                         )}
                     </div>
 
-                    <div class="d-flex justify-content-center" >
-                        <div class="d-flex align-items-center" >
-
-                        </div>
-                    </div>
                 </div>
                 <Footer />
             </>
