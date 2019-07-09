@@ -1,9 +1,20 @@
 const mysql = require("mysql");
 const con = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "root",
-    database: "zavrsni_amila",
+    host: "remotemysql.com",
+    user: "kSRtNPq2il",
+    password: "wwRbCIBHHR",
+    database: "kSRtNPq2il",
+    /*
+    Username: kSRtNPq2il
+
+Database name: kSRtNPq2il
+
+Password: wwRbCIBHHR
+
+Server: remotemysql.com
+
+Port: 3306
+    */
     //port:"3306"
 })
 //Konekcija na bazu + kreiranje tabela
