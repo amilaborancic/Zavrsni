@@ -56,22 +56,33 @@ app.get("/items", (req, res) => {
             })
         }
         else {
-            const blob = result[0].image;
-            var url = "";
-
-            if (blob != null) {
-                var buffer = Buffer.from(blob);
-                url = "data:image/png;base64," + buffer;
+            if(result.length==0){
+                res.send({
+                    success: true,
+                    msg: "",
+                    data: []
+    
+                })
             }
-            res.send({
-                success: true,
-                msg: "",
-                data: {
-                    imgUrl: url,
-                    result: result
+            else{
+                const blob = result[0].image;
+                var url = "";
+    
+                if (blob != null) {
+                    var buffer = Buffer.from(blob);
+                    url = "data:image/png;base64," + buffer;
                 }
-
-            })
+                res.send({
+                    success: true,
+                    msg: "",
+                    data: {
+                        imgUrl: url,
+                        result: result
+                    }
+    
+                })
+            }
+            
         }
     })
 })
