@@ -18,7 +18,10 @@ app.use(function (req, res, next) {
 });
 
 //DODATNO
-app.get("/", function (req, res) {
+app.get("/", (req, res)=>{
+    res.send("Zavrsni rad 2019. Backend bez zastite od SQLi.");
+})
+app.get("/users", function (req, res) {
 
     con.query("SELECT * FROM customers", function (err, result) {
         if (err) console.log(err);
