@@ -3,19 +3,7 @@ const con = mysql.createConnection({
     host: "remotemysql.com",
     user: "kSRtNPq2il",
     password: "wwRbCIBHHR",
-    database: "kSRtNPq2il",
-    /*
-    Username: kSRtNPq2il
-
-Database name: kSRtNPq2il
-
-Password: wwRbCIBHHR
-
-Server: remotemysql.com
-
-Port: 3306
-    */
-    //port:"3306"
+    database: "kSRtNPq2il"
 })
 //Konekcija na bazu + kreiranje tabela
 con.connect(function (err) {

@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
 });
 
 //DODATNO
-app.get("/", (req, res)=>{
+app.get("/", (req, res) => {
     res.send("Zavrsni rad 2019. Backend bez zastite od SQLi.");
 })
 app.get("/users", function (req, res) {
@@ -31,9 +31,28 @@ app.get("/users", function (req, res) {
     })
 })
 //info oko tabela
-app.get("/tabele",(req,res)=>{
-    con.query("SELECT TABLE_NAME, TABLE_SCHEMA FROM information_schema.tables",(err,result)=>{
-        if(err){
+app.get("/tabele", (req, res) => {
+    con.query("SELECT TABLE_NAME, TABLE_SCHEMA FROM information_schema.tables", (err, result) => {
+        if (err) {
+            res.send({
+                success: false,
+                msg: err,
+                data: null
+            })
+        }
+        else {
+            res.send({
+                success: true,
+                msg: err,
+                data: result
+            })
+        }
+    })
+})
+app.get("/items/noPicture", (req, res) => {
+
+    con.query("SELECT item_id, name, price, category FROM items", (err, result)=>{
+        if (err) {
             res.send({
                 success: false,
                 msg: err,
@@ -43,7 +62,7 @@ app.get("/tabele",(req,res)=>{
         else{
             res.send({
                 success: true,
-                msg: err,
+                msg: "",
                 data: result
             })
         }
@@ -59,18 +78,18 @@ app.get("/items", (req, res) => {
             })
         }
         else {
-            if(result.length==0){
+            if (result.length == 0) {
                 res.send({
                     success: true,
                     msg: "",
                     data: []
-    
+
                 })
             }
-            else{
+            else {
                 const blob = result[0].image;
                 var url = "";
-    
+
                 if (blob != null) {
                     var buffer = Buffer.from(blob);
                     url = "data:image/png;base64," + buffer;
@@ -82,10 +101,10 @@ app.get("/items", (req, res) => {
                         imgUrl: url,
                         result: result
                     }
-    
+
                 })
             }
-            
+
         }
     })
 })
@@ -167,23 +186,37 @@ app.get("/carts", (req, res) => {
 
 //brisanje svih podataka osim itema
 app.delete("/", (req, res) => {
-    con.query("DELETE from customers", (err, result) => {
-        if (err) console.log(err);
+    con.query("SET FOREIGN_KEY_CHECKS = 0;", (err, odg) => {
+        if (err) {
+            console.log(err);
+        }
         else {
-            con.query("DELETE from cart_items", (err, l) => {
+            con.query("DELETE from customers", (err, a) => {
                 if (err) console.log(err);
                 else {
-                    con.query("DELETE from carts", (err, data) => {
+                    con.query("DELETE from cart_items", (err, l) => {
                         if (err) console.log(err);
                         else {
-                            res.send("Uspjesno obrisano sve");
+                            con.query("DELETE from carts", (err, d) => {
+                                if (err) console.log(err);
+                                else {
+                                    con.query("SET FOREIGN_KEY_CHECKS = 1;", (err, result) => {
+                                        if (err) console.log(err);
+                                        else {
+                                            res.send("Uspjesno obrisano sve");
+                                        }
+                                    })
+
+                                }
+                            })
                         }
                     })
+
                 }
             })
-
         }
     })
+
 })
 //
 //RUTE
